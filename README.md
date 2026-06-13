@@ -1,6 +1,6 @@
 # TS-M1N3
 
-[![CI](https://github.com/ramerdigital/TS-M1N3/actions/workflows/cmake.yml/badge.svg)](https://github.com/ramerdigital/TS-M1N3/actions/workflows/cmake.yml) [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-brightgreen.svg)](https://www.gnu.org/licenses/gpl-3.0) [![Downloads](https://img.shields.io/github/downloads/ramerdigital/TS-M1N3/total)](https://somsubhra.github.io/github-release-stats/?username=ramerdigital&repository=TS-M1N3&page=1&per_page=30)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-brightgreen.svg)](https://www.gnu.org/licenses/gpl-3.0) [![Downloads](https://img.shields.io/github/downloads/ramerdigital/Ramer-TS-M1N3/total)](https://somsubhra.github.io/github-release-stats/?username=ramerdigital&repository=Ramer-TS-M1N3&page=1&per_page=30)
 
 > [!IMPORTANT]
 > **Zero Telemetry Guarantee**: This plugin contains absolutely zero telemetry, zero analytics, zero usage tracking, and zero network connectivity. It runs 100% offline and respects your privacy. Ramer Digital defends zero telemetry.
@@ -31,7 +31,7 @@ For the most realistic emulation, place the TS-M1N3 plugin before your virtual a
 
 ## Installation
 
-The pre-built release version **26.6.1** is available directly on the [GitHub Releases](https://github.com/ramerdigital/TS-M1N3/releases) page. Ramer Digital provides the official pre-built package **exclusively in the AudioUnit (AU) format** compiled in Release configuration.
+The pre-built release version **26.6.1** is available directly on the [GitHub Releases](https://github.com/ramerdigital/Ramer-TS-M1N3/releases) page. Ramer Digital provides the official pre-built package **exclusively in the AudioUnit (AU) format** compiled in Release configuration.
 
 Alternatively, the plugin can be built locally from source (which compiles both AU and VST3 formats) by following the instructions below.
 
@@ -51,8 +51,8 @@ For the training data, five steps for the gain and tone knobs were recorded (0.0
 You can build and validate the plugin using the convenience script at the root of the project:
 ```bash
 # Clone the repository
-$ git clone https://github.com/ramerdigital/TS-M1N3.git
-$ cd TS-M1N3
+$ git clone https://github.com/ramerdigital/Ramer-TS-M1N3.git
+$ cd Ramer-TS-M1N3
 
 # Initialize submodules recursively
 $ git submodule update --init --recursive
