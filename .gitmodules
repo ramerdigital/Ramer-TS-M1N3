@@ -1,15 +1,16 @@
 [submodule "modules/json"]
 	path = modules/json
-	url = https://github.com/nlohmann/json.git
+	url = https://github.com/ramerdigital/nlohmann-json.git
 [submodule "modules/chowdsp_utils"]
 	path = modules/chowdsp_utils
-	url = https://github.com/Chowdhury-DSP/chowdsp_utils
-[submodule "modules/libsamplerate"]
-	path = modules/libsamplerate
-	url = https://github.com/libsndfile/libsamplerate
+	url = https://github.com/ramerdigital/chowdsp_utils.git
 [submodule "modules/JUCE"]
 	path = modules/JUCE
-	url = https://github.com/juce-framework/JUCE.git
+	url = https://github.com/ramerdigital/JUCE.git
 [submodule "modules/RTNeural"]
 	path = modules/RTNeural
-	url = https://github.com/jatinchowdhury18/RTNeural.git
+	url = https://github.com/ramerdigital/RTNeural.git
+[submodule "modules/r8brain-free-src"]
+	path = modules/r8brain-free-src
+	url = https://github.com/ramerdigital/r8brain-free-src.git
+	branch = development

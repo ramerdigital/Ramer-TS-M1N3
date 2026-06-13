@@ -7,13 +7,17 @@
 
   ==============================================================================
 */
+#pragma once
 
 #include <nlohmann/json.hpp>
 #include "RTNeuralLSTM.h"
 
-#pragma once
+#if defined (__APPLE__)
+ #include <Accelerate/Accelerate.h>
+#endif
 
 #include "../JuceLibraryCode/JuceHeader.h"
+#include "R8BrainResampler.h"
 
 #define GAIN_ID "drive"
 #define GAIN_NAME "Drive"
@@ -21,6 +25,8 @@
 #define MASTER_NAME "Level"
 #define TONE_ID "tone"
 #define TONE_NAME "Tone"
+#define INPUT_GAIN_ID "input_gain"
+#define INPUT_GAIN_NAME "Input Gain"
 
 
 //==============================================================================
@@ -73,7 +79,7 @@ public:
     //void setMaster(float db_ampMaster);
 
     // Pedal/amp states
-    int fw_state = 1; // 0 = off, 1 = on
+    std::atomic<int> fw_state { 1 }; // 0 = off, 1 = on
     //float driveValue = 0.5;
     //float toneValue = 0.5;
     //float masterValue = 0.5;
@@ -95,10 +101,11 @@ private:
     std::atomic<float>* driveParam = nullptr;
     std::atomic<float>* toneParam = nullptr;
     std::atomic<float>* masterParam = nullptr;
+    std::atomic<float>* inputGainParam = nullptr;
 
     float previousMasterValue = 0.5;
 
-    chowdsp::ResampledProcess<chowdsp::ResamplingTypes::SRCResampler<>> resampler;
+    chowdsp::ResampledProcess<R8BrainResampler> resampler;
 
     //dsp::IIR::Filter<float> dcBlocker;  // Unused for TS-M1N3 plugin, leaving commented as template for future plugins
 

@@ -3,12 +3,15 @@ add_library(warning_flags INTERFACE)
 if((CMAKE_CXX_COMPILER_ID STREQUAL "MSVC") OR (CMAKE_CXX_SIMULATE_ID STREQUAL "MSVC"))
     target_compile_options(warning_flags INTERFACE
         /W4     # base warning level
+        /WX     # Treat warnings as errors
         #/wd4458 # declaration hides class member (from Foley's GUI Magic)
         /wd4505 # since VS2019 doesn't handle [[ maybe_unused ]] for static functions (RTNeural::debug_print)
         /wd4244 # for XSIMD
     )
 elseif((CMAKE_CXX_COMPILER_ID STREQUAL "Clang") OR (CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang"))
     target_compile_options(warning_flags INTERFACE
+        -Werror # Treat warnings as errors
+        -Wno-pass-failed # Do not fail build if vectorization/optimization passes fail
         -Wall -Wshadow-all -Wshorten-64-to-32 -Wstrict-aliasing -Wuninitialized
         -Wunused-parameter -Wconversion -Wsign-compare -Wint-conversion
         -Wconditional-uninitialized -Woverloaded-virtual -Wreorder
@@ -27,8 +30,10 @@ elseif((CMAKE_CXX_COMPILER_ID STREQUAL "Clang") OR (CMAKE_CXX_COMPILER_ID STREQU
         # Needed for ARM processor, OSX versions below 10.14
         -fno-aligned-allocation
     )
+
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     target_compile_options(warning_flags INTERFACE
+        -Werror # Treat warnings as errors
         -Wall -Wextra -Wstrict-aliasing -Wuninitialized -Wunused-parameter
         -Wsign-compare -Woverloaded-virtual -Wreorder -Wunreachable-code
         -Wzero-as-null-pointer-constant -Wcast-align -Wno-implicit-fallthrough

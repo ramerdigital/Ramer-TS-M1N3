@@ -25,8 +25,8 @@ void myLookAndFeel::setLookAndFeel(Image inputImage)
 
 //==============================================================================
 void myLookAndFeel::drawRotarySlider(Graphics& g,
-    int x, int y, int width, int height, float sliderPos,
-    float rotaryStartAngle, float rotaryEndAngle, Slider& slider)
+    int x, int y, int width, int height, float /*sliderPos*/,
+    float /*rotaryStartAngle*/, float /*rotaryEndAngle*/, Slider& slider)
 {
     const double rotation = (slider.getValue()
         - slider.getMinimum())
@@ -35,9 +35,13 @@ void myLookAndFeel::drawRotarySlider(Graphics& g,
 
     const int frames = img.getHeight() / img.getWidth();
     const int frameId = (int)ceil(rotation * ((double)frames - 1.0));
-    const float radius = jmin(width / 2.0f, height / 2.0f);
-    const float centerX = x + width * 0.5f;
-    const float centerY = y + height * 0.5f;
+    const auto fWidth = static_cast<float> (width);
+    const auto fHeight = static_cast<float> (height);
+    const auto fX = static_cast<float> (x);
+    const auto fY = static_cast<float> (y);
+    const float radius = jmin(fWidth / 2.0f, fHeight / 2.0f);
+    const float centerX = fX + fWidth * 0.5f;
+    const float centerY = fY + fHeight * 0.5f;
     const float rx = centerX - radius - 1.0f;
     const float ry = centerY - radius;
 

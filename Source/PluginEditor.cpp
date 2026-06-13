@@ -17,8 +17,9 @@
 
 //==============================================================================
 TSM1N3AudioProcessorEditor::TSM1N3AudioProcessorEditor (TSM1N3AudioProcessor& p)
-    : AudioProcessorEditor (&p), processor (p)
+    : AudioProcessorEditor (&p), audioProcessor (p)
 {
+    setOpaque (true);
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to
 
@@ -26,7 +27,7 @@ TSM1N3AudioProcessorEditor::TSM1N3AudioProcessorEditor (TSM1N3AudioProcessor& p)
     blackHexKnobLAF.setLookAndFeel(ImageCache::getFromMemory(BinaryData::knob2_png, BinaryData::knob2_pngSize));
 
     addAndMakeVisible(odFootSw);
-    odFootSw.setImages(true, true, true,
+    odFootSw.setImages(false, true, true,
         ImageCache::getFromMemory(BinaryData::footswitch_up_png, BinaryData::footswitch_up_pngSize), 1.0, Colours::transparentWhite,
         Image(), 1.0, Colours::transparentWhite,
         ImageCache::getFromMemory(BinaryData::footswitch_up_png, BinaryData::footswitch_up_pngSize), 1.0, Colours::transparentWhite,
@@ -34,22 +35,22 @@ TSM1N3AudioProcessorEditor::TSM1N3AudioProcessorEditor (TSM1N3AudioProcessor& p)
     odFootSw.addListener(this);
 
     addAndMakeVisible(odLED);
-    odLED.setImages(true, true, true,
+    odLED.setImages(false, true, true,
         ImageCache::getFromMemory(BinaryData::led_red_on_png, BinaryData::led_red_on_pngSize), 1.0, Colours::transparentWhite,
         Image(), 1.0, Colours::transparentWhite,
         ImageCache::getFromMemory(BinaryData::led_red_on_png, BinaryData::led_red_on_pngSize), 1.0, Colours::transparentWhite,
         0.0);
     odLED.addListener(this);
 
-    gainSliderAttach = std::make_unique<AudioProcessorValueTreeState::SliderAttachment>(processor.treeState, GAIN_ID, ampGainKnob);
+    gainSliderAttach = std::make_unique<AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.treeState, GAIN_ID, ampGainKnob);
     addAndMakeVisible(ampGainKnob);
     ampGainKnob.setLookAndFeel(&blackHexKnobLAF);
     ampGainKnob.addListener(this);
     ampGainKnob.setSliderStyle(juce::Slider::SliderStyle::RotaryVerticalDrag);
     ampGainKnob.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::NoTextBox, false, 50, 20);
-    ampGainKnob.setDoubleClickReturnValue(true, 0.5);
+    ampGainKnob.setDoubleClickReturnValue(true, 0.0);
 	
-    toneSliderAttach = std::make_unique<AudioProcessorValueTreeState::SliderAttachment>(processor.treeState, TONE_ID, ampToneKnob);
+    toneSliderAttach = std::make_unique<AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.treeState, TONE_ID, ampToneKnob);
     addAndMakeVisible(ampToneKnob);
     ampToneKnob.setLookAndFeel(&blackHexKnobLAF);
     ampToneKnob.addListener(this);
@@ -57,7 +58,7 @@ TSM1N3AudioProcessorEditor::TSM1N3AudioProcessorEditor (TSM1N3AudioProcessor& p)
     ampToneKnob.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::NoTextBox, false, 50, 20 );
     ampToneKnob.setDoubleClickReturnValue(true, 0.5);
 
-    masterSliderAttach = std::make_unique<AudioProcessorValueTreeState::SliderAttachment>(processor.treeState, MASTER_ID, ampMasterKnob);
+    masterSliderAttach = std::make_unique<AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.treeState, MASTER_ID, ampMasterKnob);
     addAndMakeVisible(ampMasterKnob);
     ampMasterKnob.setLookAndFeel(&blackHexKnobLAF);
     ampMasterKnob.addListener(this);
@@ -65,18 +66,19 @@ TSM1N3AudioProcessorEditor::TSM1N3AudioProcessorEditor (TSM1N3AudioProcessor& p)
     ampMasterKnob.setTextBoxStyle(juce::Slider::TextEntryBoxPosition::NoTextBox, false, 50, 20 );
     ampMasterKnob.setDoubleClickReturnValue(true, 0.5);
 
-    addAndMakeVisible(versionLabel);
-    versionLabel.setText("v1.2", juce::NotificationType::dontSendNotification);
-    versionLabel.setJustificationType(juce::Justification::left);
-    versionLabel.setColour(juce::Label::textColourId, juce::Colours::white);
-    auto font = versionLabel.getFont();
-    float height = font.getHeight();
-    font.setHeight(height); // 0.75
-    versionLabel.setFont(font);
+    addAndMakeVisible(inputGainToggle);
+    inputGainToggle.setLookAndFeel(&toggleSwitchLAF);
+    inputGainToggle.setSliderStyle(Slider::SliderStyle::LinearVertical);
+    inputGainToggle.setRange(0, 2, 1);
+    inputGainToggle.setTextBoxStyle(Slider::TextEntryBoxPosition::NoTextBox, false, 0, 0);
+    inputGainToggleAttach = std::make_unique<AudioProcessorValueTreeState::SliderAttachment>(audioProcessor.treeState, INPUT_GAIN_ID, inputGainToggle);
 
+    addAndMakeVisible (infoButton);
+    infoButton.addListener (this);
+    addChildComponent (infoOverlay);
 
     // Size of plugin GUI
-    setSize(340, 500);
+    setSize(255, 375);
     resetImages();
 }
 
@@ -85,20 +87,30 @@ TSM1N3AudioProcessorEditor::~TSM1N3AudioProcessorEditor()
     ampGainKnob.setLookAndFeel(nullptr);
     ampToneKnob.setLookAndFeel(nullptr);
     ampMasterKnob.setLookAndFeel(nullptr);
+    inputGainToggle.setLookAndFeel(nullptr);
 }
 
 //==============================================================================
 void TSM1N3AudioProcessorEditor::paint (Graphics& g)
 {
-    // Workaround for graphics on Windows builds (clipping code doesn't work correctly on Windows)
-    #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
-    g.drawImageAt(background, 0, 0);  // Debug Line: Redraw entire background image
-    #else
-    // Redraw only the clipped part of the background image
-    juce::Rectangle<int> ClipRect = g.getClipBounds(); 
-    g.drawImage(background, ClipRect.getX(), ClipRect.getY(), ClipRect.getWidth(), ClipRect.getHeight(), ClipRect.getX(), ClipRect.getY(), ClipRect.getWidth(), ClipRect.getHeight());
-    #endif
-   
+    g.drawImage (background, getLocalBounds().toFloat());
+
+    g.setFont (FontOptions (10.0f, Font::bold));
+    juce::String buildText = "RAMERED @ 26.6." + juce::String (__TIME__).substring (0, 5);
+
+    // Draw main text (white)
+    g.setColour (juce::Colours::white);
+    g.drawSingleLineText (buildText, 1, 372);
+
+    // Draw logo
+    g.drawImage (logoImage, 40, 313, 32, 32, 0, 0, logoImage.getWidth(), logoImage.getHeight());
+
+    // Draw handwritten labels for input gain toggle switch
+    g.setFont (FontOptions ("Noteworthy", 9.0f, Font::plain));
+    g.setColour (Colours::black.withAlpha (0.8f));
+    g.drawText ("hi", 156, 95, 25, 10, Justification::right);
+    g.drawText ("mid", 156, 105, 25, 10, Justification::right);
+    g.drawText ("lo", 156, 115, 25, 10, Justification::right);
 }
 
 void TSM1N3AudioProcessorEditor::resized()
@@ -107,13 +119,17 @@ void TSM1N3AudioProcessorEditor::resized()
     // subcomponents in your editor..
 
     // Amp Widgets
-    ampGainKnob.setBounds(20, 13, 125, 95);
-    ampMasterKnob.setBounds(196, 13, 125, 95);
-    ampToneKnob.setBounds(110, 91, 125, 95);
+    ampGainKnob.setBounds(15, 10, 94, 71);
+    ampMasterKnob.setBounds(147, 10, 94, 71);
+    ampToneKnob.setBounds(82, 68, 94, 71);
 
-    odLED.setBounds(152, 315, 40, 40);
-    odFootSw.setBounds(133, 365, 80, 80);
-    versionLabel.setBounds(302, 488, 60, 10);
+    inputGainToggle.setBounds(185, 92, 18, 37);
+
+    odLED.setBounds(114, 236, 30, 30);
+    odFootSw.setBounds(100, 274, 60, 60);
+
+    infoButton.setBounds (229, 349, 16, 16);
+    infoOverlay.setBounds (getLocalBounds());
 }
 
 
@@ -121,51 +137,56 @@ void TSM1N3AudioProcessorEditor::resized()
 void TSM1N3AudioProcessorEditor::buttonClicked(juce::Button* button)
 {
     if (button == &odFootSw) {
-        if (processor.fw_state == 0)
-            processor.fw_state = 1;
+        if (audioProcessor.fw_state == 0)
+            audioProcessor.fw_state = 1;
         else
-            processor.fw_state = 0;
+            audioProcessor.fw_state = 0;
 
         resetImages();
+    }
+    else if (button == &infoButton)
+    {
+        infoOverlay.setVisible (true);
+        infoOverlay.toFront (true);
     }
 }
 
 
-void TSM1N3AudioProcessorEditor::sliderValueChanged(Slider* slider)
+void TSM1N3AudioProcessorEditor::sliderValueChanged(Slider* /*slider*/)
 {
     // Amp
     /*
     if (slider == &ampGainKnob)
-        processor.setDrive(slider->getValue());
+        audioProcessor.setDrive(slider->getValue());
     else if (slider == &ampMasterKnob)
-        processor.setMaster(slider->getValue());
+        audioProcessor.setMaster(slider->getValue());
     else if (slider == &ampToneKnob) 
-        processor.setTone(slider->getValue());
+        audioProcessor.setTone(slider->getValue());
         */
 }
 
 
 void TSM1N3AudioProcessorEditor::resetImages()
 {
-    if (processor.fw_state == 0) {
-        odFootSw.setImages(true, true, true,
+    if (audioProcessor.fw_state == 0) {
+        odFootSw.setImages(false, true, true,
             ImageCache::getFromMemory(BinaryData::footswitch_up_png, BinaryData::footswitch_up_pngSize), 1.0, Colours::transparentWhite,
             Image(), 1.0, Colours::transparentWhite,
             ImageCache::getFromMemory(BinaryData::footswitch_up_png, BinaryData::footswitch_up_pngSize), 1.0, Colours::transparentWhite,
             0.0);
-        odLED.setImages(true, true, true,
+        odLED.setImages(false, true, true,
             ImageCache::getFromMemory(BinaryData::led_red_off_png, BinaryData::led_red_off_pngSize), 1.0, Colours::transparentWhite,
             Image(), 1.0, Colours::transparentWhite,
             ImageCache::getFromMemory(BinaryData::led_red_off_png, BinaryData::led_red_off_pngSize), 1.0, Colours::transparentWhite,
             0.0);
     }
     else {
-        odFootSw.setImages(true, true, true,
+        odFootSw.setImages(false, true, true,
             ImageCache::getFromMemory(BinaryData::footswitch_down_png, BinaryData::footswitch_down_pngSize), 1.0, Colours::transparentWhite,
             Image(), 1.0, Colours::transparentWhite,
             ImageCache::getFromMemory(BinaryData::footswitch_down_png, BinaryData::footswitch_down_pngSize), 1.0, Colours::transparentWhite,
             0.0);
-       odLED.setImages(true, true, true,
+       odLED.setImages(false, true, true,
             ImageCache::getFromMemory(BinaryData::led_red_on_png, BinaryData::led_red_on_pngSize), 1.0, Colours::transparentWhite,
             Image(), 1.0, Colours::transparentWhite,
             ImageCache::getFromMemory(BinaryData::led_red_on_png, BinaryData::led_red_on_pngSize), 1.0, Colours::transparentWhite,
