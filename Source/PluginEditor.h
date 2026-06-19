@@ -81,8 +81,8 @@ class InfoOverlay : public juce::Component, public juce::Button::Listener {
 public:
   InfoOverlay() {
     // GitHub Link
-    githubLink.setButtonText("https://github.com/ramerdigital/TS-M1N3");
-    githubLink.setURL(juce::URL("https://github.com/ramerdigital/TS-M1N3"));
+    githubLink.setButtonText("https://github.com/ramerdigital/Ramer-TS-M1N3");
+    githubLink.setURL(juce::URL("https://github.com/ramerdigital/Ramer-TS-M1N3"));
     githubLink.setFont(juce::FontOptions(9.0f, juce::Font::plain), false);
     githubLink.setJustificationType(juce::Justification::centredLeft);
     githubLink.setColour(juce::HyperlinkButton::textColourId,

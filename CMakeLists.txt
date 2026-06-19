@@ -47,7 +47,7 @@ juce_add_plugin(ramer-ts-m1n3
     PLUGIN_CODE Rdm3
     FORMATS ${JUCE_FORMATS}
     PRODUCT_NAME "Ramer-TS-M1N3"
-    LV2URI https://github.com/ramerdigital/TS-M1N3
+    LV2URI https://github.com/ramerdigital/Ramer-TS-M1N3
     ICON_BIG resources/logo.png
     MICROPHONE_PERMISSION_ENABLED TRUE
     MICROPHONE_PERMISSION_TEXT "This plugin requires audio input to process your instrument signal in real-time."
