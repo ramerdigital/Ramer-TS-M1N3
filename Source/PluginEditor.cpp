@@ -103,13 +103,6 @@ void TSM1N3AudioProcessorEditor::paint (Graphics& g)
 {
     g.drawImage (background, getLocalBounds().toFloat());
 
-    g.setFont (FontOptions (10.0f, Font::bold));
-    juce::String buildText = "RAMERED @ 26.6." + juce::String (__TIME__).substring (0, 5);
-
-    // Draw main text (white)
-    g.setColour (juce::Colours::white);
-    g.drawSingleLineText (buildText, 1, 372);
-
     // Draw logo
     g.drawImage (logoImage, 40, 313, 32, 32, 0, 0, logoImage.getWidth(), logoImage.getHeight());
 

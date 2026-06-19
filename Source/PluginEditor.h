@@ -122,7 +122,7 @@ public:
     // Title
     g.setColour(juce::Colours::white);
     g.setFont(juce::FontOptions(17.0f, juce::Font::bold));
-    g.drawText("TS-M1N3", panelRect.getX(), panelRect.getY() + 10,
+    g.drawText("TS-M1N3 v" + juce::String(JucePlugin_VersionString), panelRect.getX(), panelRect.getY() + 10,
                panelRect.getWidth(), 20, juce::Justification::centred);
 
     // Subtitle
@@ -173,17 +173,19 @@ public:
     // Submodules (using plain hyphens and spaced layout)
     g.setFont(juce::FontOptions(9.0f, juce::Font::plain));
     g.setColour(juce::Colours::white.withAlpha(0.6f));
-    int startY = panelRect.getY() + 250;
-    g.drawSingleLineText("- JUCE Framework (GPLv3) - JUCE team",
+    int startY = panelRect.getY() + 240;
+    g.drawSingleLineText("- TS-M1N3 Original (GPLv3) - GuitarML",
                          panelRect.getX() + 15, startY);
+    g.drawSingleLineText("- JUCE Framework (GPLv3) - JUCE team",
+                         panelRect.getX() + 15, startY + 11);
     g.drawSingleLineText("- RTNeural (BSD 3-Clause) - J. Chowdhury",
-                         panelRect.getX() + 15, startY + 12);
+                         panelRect.getX() + 15, startY + 22);
     g.drawSingleLineText("- chowdsp_utils (GPLv3) - Chowdhury DSP",
-                         panelRect.getX() + 15, startY + 24);
+                         panelRect.getX() + 15, startY + 33);
     g.drawSingleLineText("- r8brain-free-src (MIT) - A. Vaneev",
-                         panelRect.getX() + 15, startY + 36);
+                         panelRect.getX() + 15, startY + 44);
     g.drawSingleLineText("- nlohmann/json (MIT) - N. Lohmann",
-                         panelRect.getX() + 15, startY + 48);
+                         panelRect.getX() + 15, startY + 55);
   }
 
   void resized() override {

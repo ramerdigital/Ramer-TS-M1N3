@@ -31,7 +31,7 @@ For the most realistic emulation, place the TS-M1N3 plugin before your virtual a
 
 ## Installation
 
-The pre-built release version **26.6.1** is available directly on the [GitHub Releases](https://github.com/ramerdigital/Ramer-TS-M1N3/releases) page. Ramer Digital provides the official pre-built package **exclusively in the AudioUnit (AU) format** compiled in Release configuration.
+The pre-built release version **1.0.0** is available directly on the [GitHub Releases](https://github.com/ramerdigital/Ramer-TS-M1N3/releases) page. Ramer Digital provides the official pre-built package **exclusively in the AudioUnit (AU) format** compiled in Release configuration.
 
 Alternatively, the plugin can be built locally from source (which compiles both AU and VST3 formats) by following the instructions below.
 
@@ -100,7 +100,6 @@ This fork of **TS-M1N3** serves as an experimental branch exploring alternative 
 
 ### 4. Graphical User Interface (GUI)
 * **Push Mod Switch**: Positioned a symmetrical 2-position toggle switch (`juce::Slider`) on the left face (`x = 52`, balancing the right-side input gain switch at `x = 185`) to engage/disengage the pre-overdrive low-mid boost filter, complete with custom look-and-feel graphics and handwritten `"on"`/`"off"` UI labels.
-* **Build Time Stamp**: Embedded a visual build timestamp formatted as `"RAMERED @ YY.M.[__TIME__]"` at the bottom-left corner of the pedal UI.
 * **Background Rendering**: Simplified paint clipping code to utilize standard JUCE cross-platform drawing functions.
 
 ---
