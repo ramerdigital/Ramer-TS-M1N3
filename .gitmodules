@@ -13,4 +13,3 @@
 [submodule "modules/r8brain-free-src"]
 	path = modules/r8brain-free-src
 	url = https://github.com/ramerdigital/r8brain-free-src.git
-	branch = development
