@@ -6,19 +6,7 @@ set -e
 # Ensure relative paths resolve relative to the script directory
 cd "$(dirname "$0")"
 
-# Parse arguments
 BUILD_CONFIG="Release"
-
-for arg in "$@"; do
-    case $arg in
-        --debug|--build-debug)
-            BUILD_CONFIG="Debug"
-            ;;
-        *)
-            # Ignore unknown options or handle differently
-            ;;
-    esac
-done
 
 # Clean up old build outputs to guarantee a clean build
 echo "Cleaning old build artifacts..."
@@ -57,56 +45,8 @@ echo "=========================================================="
 echo "Building the product configuration: $BUILD_CONFIG..."
 cmake --build .build --config "$BUILD_CONFIG"
 
-# Create Products folder inside build directory
-PRODUCTS_DIR=".build/Products"
-echo "Creating Products folder at $PRODUCTS_DIR..."
-mkdir -p "$PRODUCTS_DIR"
-
-# Copy build artifacts to Products folder
-# JUCE places build artifacts in .build/ramer-ts-m1n3_artefacts/<Config>
-ARTFACTS_DIR=".build/ramer-ts-m1n3_artefacts/$BUILD_CONFIG"
-
-echo "Copying VST3 and AU plugins to $PRODUCTS_DIR..."
-
-found_vst=false
-found_au=false
-
-if [ -d "$ARTFACTS_DIR/VST3/Ramer-TS-M1N3.vst3" ]; then
-    cp -R "$ARTFACTS_DIR/VST3/Ramer-TS-M1N3.vst3" "$PRODUCTS_DIR/"
-    echo "Successfully copied VST3: Ramer-TS-M1N3.vst3"
-    found_vst=true
-fi
-
-if [ -d "$ARTFACTS_DIR/AU/Ramer-TS-M1N3.component" ]; then
-    cp -R "$ARTFACTS_DIR/AU/Ramer-TS-M1N3.component" "$PRODUCTS_DIR/"
-    echo "Successfully copied AU: Ramer-TS-M1N3.component"
-    found_au=true
-fi
-
-if [ "$found_vst" = false ]; then
-    echo "Searching recursively for VST3 plugin..."
-    find .build/ramer-ts-m1n3_artefacts -type d -name "Ramer-TS-M1N3.vst3" -exec cp -R {} "$PRODUCTS_DIR/" \;
-fi
-
-if [ "$found_au" = false ]; then
-    echo "Searching recursively for AU plugin..."
-    find .build/ramer-ts-m1n3_artefacts -type d -name "Ramer-TS-M1N3.component" -exec cp -R {} "$PRODUCTS_DIR/" \;
-fi
-
-USER_COMPONENTS_DIR="$HOME/Library/Audio/Plug-Ins/Components"
-if [ -d "$PRODUCTS_DIR/Ramer-TS-M1N3.component" ]; then
-    echo "Automatically installing AudioUnit component to $USER_COMPONENTS_DIR..."
-    mkdir -p "$USER_COMPONENTS_DIR"
-    rm -Rf "$USER_COMPONENTS_DIR/Ramer-TS-M1N3.component"
-    cp -R "$PRODUCTS_DIR/Ramer-TS-M1N3.component" "$USER_COMPONENTS_DIR/"
-    echo "Successfully installed component at: $USER_COMPONENTS_DIR/Ramer-TS-M1N3.component"
-    echo "Restarting AudioComponentRegistrar to force macOS to rescan the new plugin..."
-    killall -9 AudioComponentRegistrar || true
-fi
-
 echo "=========================================================="
-echo "Build and copying to Products completed successfully!"
-echo "Products path: $PRODUCTS_DIR"
-ls -la "$PRODUCTS_DIR"
+echo "Build completed successfully!"
 echo "=========================================================="
+
 

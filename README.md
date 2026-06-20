@@ -69,9 +69,9 @@ $ cmake -B.build -D"CMAKE_OSX_ARCHITECTURES=arm64" -DMACOS_RELEASE=ON
 $ cmake --build .build --config Release
 ```
 
-The output binaries will be copied to:
-* `.bin/Mac/` (within the workspace)
-* `~/Library/Audio/Plug-Ins/Components/` (the AudioUnit component for validation/host usage)
+The output binaries will be located in:
+* `.build/ramer-ts-m1n3_artefacts/Release/AU/Ramer-TS-M1N3.component`
+* `.build/ramer-ts-m1n3_artefacts/Release/VST3/Ramer-TS-M1N3.vst3`
 
 
 ## Alternative Approaches & Enhancements
