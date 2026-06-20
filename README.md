@@ -26,18 +26,14 @@ Unlike static "snapshots" that capture a device at a single setting, TS-M1N3 emu
 
 This dynamic conditioning allows for accurate emulation of both knobs across all possible configurations, reproducing the full analog response.
 
-### Key Controls & Features
+### Custom Hardware Modifications
 
-TS-M1N3 extends the classic Tubescreamer controls with custom modifications:
-* **Drive (Gain)**: Conditioned parameter of the neural network controlling the level of distortion (0.0 to 1.0).
-* **Tone**: Conditioned parameter controlling the frequency response and brightness (0.0 to 1.0).
-* **Level**: Output gain adjustment applied post-emulation (0.0 to 1.0).
+This digital emulation extends the classic Tubescreamer layout with two custom hardware modifications:
 * **Input Gain Switch (Right Face)**: A 3-position vertical toggle selector to adjust the pre-gain level before entering the overdrive model:
   * **LO**: 1.5x pre-gain amplification
   * **MID**: 3.0x pre-gain amplification (default)
   * **HI**: 4.5x pre-gain amplification
-* **Push Mod Switch (Left Face)**: A 2-position toggle switch. When enabled, it activates a pre-overdrive peaking parametric EQ filter (**+2.0 dB centered at 200 Hz**, Q of 1.0) to shape the clipping density and add "fatness" to the low-mids.
-* **Bypass Footswitch & LED**: Symmetrical footswitch to engage/bypass the pedal, with a status LED indicating the active state.
+* **Push Mod Switch (Left Face)**: A 2-position toggle switch. When enabled, it activates a pre-overdrive peaking parametric EQ filter (**+2.0 dB centered at 200 Hz**, Q of 1.0) to shape the clipping density and enrich the low-mid "fatness" of the tone.
 
 
 ### Recommended Usage
