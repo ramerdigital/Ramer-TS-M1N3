@@ -13,7 +13,7 @@ add_subdirectory(Ramer-RTNeural)
 include(cmake/WarningFlags.cmake)
 add_library(juce_plugin_modules STATIC)
 add_subdirectory(Ramer-RTNeural/modules/Ramer-nlohmann-json)
-add_subdirectory(chowdsp_utils)
+add_subdirectory(Ramer-chowdsp_utils)
 
 target_link_libraries(juce_plugin_modules
     PRIVATE
