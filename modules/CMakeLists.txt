@@ -1,4 +1,4 @@
-add_subdirectory(JUCE)
+add_subdirectory(Ramer-JUCE)
 
 
 include(cmake/SubprojectVersion.cmake)

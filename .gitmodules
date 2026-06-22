@@ -1,9 +1,9 @@
 [submodule "modules/chowdsp_utils"]
 	path = modules/chowdsp_utils
 	url = https://github.com/ramerdigital/chowdsp_utils.git
-[submodule "modules/JUCE"]
-	path = modules/JUCE
-	url = https://github.com/ramerdigital/JUCE.git
+[submodule "modules/Ramer-JUCE"]
+	path = modules/Ramer-JUCE
+	url = https://github.com/RamerDigital/Ramer-JUCE.git
 [submodule "modules/Ramer-RTNeural"]
 	path = modules/Ramer-RTNeural
 	url = https://github.com/RamerDigital/Ramer-RTNeural.git
