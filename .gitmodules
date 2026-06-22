@@ -1,6 +1,6 @@
-[submodule "modules/json"]
-	path = modules/json
-	url = https://github.com/ramerdigital/nlohmann-json.git
+[submodule "modules/Ramer-nlohmann-json"]
+	path = modules/Ramer-nlohmann-json
+	url = https://github.com/RamerDigital/Ramer-nlohmann-json.git
 [submodule "modules/chowdsp_utils"]
 	path = modules/chowdsp_utils
 	url = https://github.com/ramerdigital/chowdsp_utils.git
