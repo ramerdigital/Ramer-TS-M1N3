@@ -7,9 +7,9 @@
 [submodule "modules/JUCE"]
 	path = modules/JUCE
 	url = https://github.com/ramerdigital/JUCE.git
-[submodule "modules/RTNeural"]
-	path = modules/RTNeural
-	url = https://github.com/ramerdigital/RTNeural.git
-[submodule "modules/r8brain-free-src"]
-	path = modules/r8brain-free-src
-	url = https://github.com/ramerdigital/r8brain-free-src.git
+[submodule "modules/Ramer-RTNeural"]
+	path = modules/Ramer-RTNeural
+	url = https://github.com/RamerDigital/Ramer-RTNeural.git
+[submodule "modules/Ramer-r8brain-free-src"]
+	path = modules/Ramer-r8brain-free-src
+	url = https://github.com/RamerDigital/Ramer-r8brain-free-src.git

@@ -8,7 +8,7 @@ message(STATUS "VERSION for JUCE: ${juce_version}")
 
 # link to RTNeural
 set(RTNEURAL_XSIMD ON CACHE BOOL "Use RTNeural with this backend" FORCE)
-add_subdirectory(RTNeural)
+add_subdirectory(Ramer-RTNeural)
 
 include(cmake/WarningFlags.cmake)
 add_library(juce_plugin_modules STATIC)
@@ -46,9 +46,9 @@ target_compile_definitions(juce_plugin_modules
 
 target_include_directories(juce_plugin_modules
     PUBLIC
-        RTNeural
-        RTNeural/modules/xsimd/include
-        r8brain-free-src
+        Ramer-RTNeural
+        Ramer-RTNeural/modules/Ramer-xsimd/include
+        Ramer-r8brain-free-src
     INTERFACE
         $<TARGET_PROPERTY:juce_plugin_modules,INCLUDE_DIRECTORIES>
 )
