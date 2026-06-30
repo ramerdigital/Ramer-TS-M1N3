@@ -1,7 +1,19 @@
 #pragma once
 
-#include <RTNeural/RTNeural.h>
 #include <nlohmann/json.hpp>
+#include <RTNeural/RTNeural.h>
+#include "JSONAllocator.h"
+
+using TS_JSON = nlohmann::basic_json<
+    std::map,
+    std::vector,
+    std::string,
+    bool,
+    std::int64_t,
+    std::uint64_t,
+    double,
+    MyJSONAllocator
+>;
 
 class RT_LSTM
 {
@@ -10,7 +22,7 @@ public:
 
     void reset();
     //void load_json3(const char* jsonFile);
-    void load_json3(const nlohmann::json& weights_json);
+    bool load_json3(const TS_JSON& weights_json);
 
     //void process(const float* inData, float* outData, int numSamples);
     void process(const float* inData, float param1, float param2, float* outData, int numSamples);
@@ -29,6 +41,6 @@ private:
         RTNeural::LSTMLayerT<float, 3, 32>,
         RTNeural::DenseT<float, 32, 1>> model_cond2;
 
-    float inArray alignas(16)[3] = { 0.0, 0.0, 0.0 };
+    float inArray alignas(16)[4] = { 0.0, 0.0, 0.0, 0.0 };
     //float inArray[2] = { 0.0, 0.0, 0.0 };
 };

@@ -1,6 +1,6 @@
 #add_subdirectory(headless)
 
-target_sources(TS-M1N3 PRIVATE
+target_sources(ramer-ts-m1n3 PRIVATE
 	myLookAndFeel.cpp
 	myLookAndFeel.h
 	PluginEditor.cpp
@@ -9,6 +9,7 @@ target_sources(TS-M1N3 PRIVATE
 	PluginProcessor.h
 	RTNeuralLSTM.cpp
 	RTNeuralLSTM.h
+	R8BrainResampler.h
 )
 
-#target_precompile_headers(TS-M1N3 PRIVATE pch.h)
+#target_precompile_headers(ramer-ts-m1n3 PRIVATE pch.h)
