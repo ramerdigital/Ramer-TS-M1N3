@@ -1,0 +1,6 @@
+.build/
+.build_debug/
+.build_Release/
+.bin/
+.libsamplerate.md
+.chowdsp_utils.md
